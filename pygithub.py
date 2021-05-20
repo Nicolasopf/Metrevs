@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from github import Github as Github_api
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, make_response
 from flask_github import GitHub as Github_login
 
 
@@ -31,23 +31,34 @@ def login():
 @app.route('/panel/')
 @github_app.authorized_handler
 def after_login(access_token):
+    ''' After login in github, user will be redirected here. '''
+    if access_token is None:  # If the user doesn't have logged with github.
+        return github_app.authorize()  # Try to authorize again.
+
     next_url = url_for('auth_key')
-    if access_token is None:
-        return github_app.authorize()
-    return redirect(next_url)
+    resp = make_response(redirect(next_url))  # Redirect the user to auth_key.
+    # set the cookie with the token to api.
+    resp.set_cookie('userToken', access_token)
+    return resp
 
 
 @app.route('/auth_key/')
 def auth_key():
     ''' Time ti play with the auth_key '''
-    # First create a Github instance
-    # using an access token
+    if not request.cookies.get("userToken"):  # If the cookie doesn't exist
+        return github_app.authorize()
+
+    # From the cookies, get the user token to do requests.
+    token = request.cookies.get('userToken')
     print(token)
+    # First create a Github api instance
     g = Github_api(token)
 
     # Then play with Github objects:
+    repo_list = []
     for repo in g.get_user().get_repos():
-        print(repo.name)
+        repo_list.append(repo.name)
+    return "<br>".join(repo_list)
 
 
 if __name__ == "__main__":
