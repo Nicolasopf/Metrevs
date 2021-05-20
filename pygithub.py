@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from github import Github as Github_api
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect
 from flask_github import GitHub as Github_login
 
 
@@ -31,10 +31,10 @@ def login():
 @app.route('/panel/')
 @github_app.authorized_handler
 def after_login(access_token):
-    next_url = url_for('index')
+    next_url = url_for('auth_key')
     if access_token is None:
         return github_app.authorize()
-    return url_for('SEND TO AUTH_KEY')
+    return redirect(next_url)
 
 
 @app.route('/auth_key/')
