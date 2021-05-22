@@ -24,8 +24,9 @@ def login():
     Login page to get the code key,
     this code key will be converted to an authorization key.
     '''
-    # If cookie X is not present:
-    return github_app.authorize()
+    if not request.cookies.get("userToken"):
+        return github_app.authorize()
+    return redirect(url_for('auth_key'))
 
 
 @app.route('/panel/')
@@ -50,15 +51,18 @@ def auth_key():
 
     # From the cookies, get the user token to do requests.
     token = request.cookies.get('userToken')
-    print(token)
     # First create a Github api instance
+
     g = Github_api(token)
 
     # Then play with Github objects:
     repo_list = []
-    for repo in g.get_user().get_repos():
-        repo_list.append(repo.name)
-    return "<br>".join(repo_list)
+    try:
+        for repo in g.get_user().get_repos():
+            repo_list.append(repo.name)
+        return "<br>".join(repo_list)
+    except:
+        return (github_app.authorize())
 
 
 if __name__ == "__main__":
