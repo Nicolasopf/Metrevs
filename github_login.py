@@ -25,7 +25,7 @@ def login():
     this code key will be converted to an authorization key.
     '''
     if not request.cookies.get("userToken"):
-        return github_app.authorize()
+        return github_app.authorize(scope="user, repo")
     return redirect(url_for('auth_key'))
 
 
@@ -34,7 +34,7 @@ def login():
 def after_login(access_token):
     ''' After login in github, user will be redirected here. '''
     if access_token is None:  # If the user doesn't have logged with github.
-        return github_app.authorize()  # Try to authorize again.
+        return github_app.authorize(scope="user, repo")  # Try to authorize again.
 
     next_url = url_for('auth_key')
     resp = make_response(redirect(next_url))  # Redirect the user to auth_key.
@@ -47,7 +47,7 @@ def after_login(access_token):
 def auth_key():
     ''' Time ti play with the auth_key '''
     if not request.cookies.get("userToken"):  # If the cookie doesn't exist
-        return github_app.authorize()
+        return github_app.authorize(scope="user, repo")
 
     # From the cookies, get the user token to do requests.
     token = request.cookies.get('userToken')
@@ -62,7 +62,7 @@ def auth_key():
             repo_list.append(repo.name)
         return "<br>".join(repo_list)
     except:
-        return (github_app.authorize())
+        return github_app.authorize(scope="user, repo")
 
 
 if __name__ == "__main__":
