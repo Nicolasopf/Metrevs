@@ -1,1 +1,1 @@
-web: gunicorn github_login:app
+web: gunicorn main:app
