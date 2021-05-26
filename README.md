@@ -25,3 +25,5 @@ GitHub-Flask give a solution with a database and you need the DB in order to use
 
 ## Authors
 Nicolás Urrea - nico15935746@gmail.com
+Diego Ahumada - Xvongola23@gmail.com
+Daniel Amado - danielfep.am@gmail.com
