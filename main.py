@@ -2,7 +2,6 @@
 ''' Starts flask application. Allow github oauth2 login and view /panel'''
 
 
-from github import Github as Github_api
 from flask import Flask, render_template, request, url_for, redirect, make_response
 from flask_github import GitHub as Github_login
 from flask import Blueprint
