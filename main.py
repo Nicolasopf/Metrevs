@@ -31,7 +31,7 @@ def login():
     '''
     if not request.cookies.get("userToken"):
         return github_app.authorize(scope="user, repo")
-    return redirect(url_for('auth_key'))
+    return redirect(url_for('after_login'))
 
 
 @app.route('/auth/')
