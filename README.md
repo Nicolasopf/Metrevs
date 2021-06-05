@@ -13,6 +13,13 @@ sudo pip3 install PyGithub
 ```
 
 ### Start application
+If you want to test or use in your localhost, don't forget to create an OAuth app in https://github.com/settings/developers
+Also, change the clien_id and client_secret in the main.py.
+
+Test in localhost:
+client_id = f3a06304f838d1f05b3c
+client_secret = 8f1cfe79f990bbd3a0340e265f66a2a222a4da8f
+
 ```
 python3 github_login.py
 ```
