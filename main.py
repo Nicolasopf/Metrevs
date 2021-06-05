@@ -6,13 +6,14 @@ from flask import Flask, render_template, request, url_for, redirect, make_respo
 from flask_github import GitHub as Github_login
 from flask import Blueprint
 from views import app_views
+from github import Github
 
 
 app = Flask(__name__)  # Start flask application
 app.url_map.strict_slashes = False  # No needed slash at end
 # Set the client ID for OAuth2
-app.config['GITHUB_CLIENT_ID'] = '8822d81236572bb9945d'
-app.config['GITHUB_CLIENT_SECRET'] = 'ebd6211b14a32306679128449d2ee7e58d451a47'  # ^^
+app.config['GITHUB_CLIENT_ID'] = 'f3a06304f838d1f05b3c'
+app.config['GITHUB_CLIENT_SECRET'] = '8f1cfe79f990bbd3a0340e265f66a2a222a4da8f'  # ^^
 app.register_blueprint(app_views)  # Start blueprint
 github_app = Github_login(app)  # Enable login to the oauth2
 
@@ -45,21 +46,38 @@ def after_login(access_token):
     if access_token is None:  # If the user doesn't have logged with github.
         return github_app.authorize(scope="user, repo")  # Redirect login.
 
-    next_url = url_for('panel')
+    next_url = url_for('add_repos')
     resp = make_response(redirect(next_url))  # Redirect the user to /panel.
     # set the cookie with the token to api.
     resp.set_cookie('userToken', access_token)
     return resp
 
 
-@app.route('/panel/')
-def panel():
-    ''' Show main panel for the user. '''
+@app.route('/add_repos')
+def add_repos():
+    ''' add repositories to local storage '''
     if not request.cookies.get("userToken"):  # If the cookie doesn't exist
         return github_app.authorize(scope="user, repo")
 
-    # Display the template html for the user to select where to go.
-    return render_template('panel.html')
+    userToken = request.cookies.get("userToken")
+    user_session = Github(userToken)
+    repos = user_session.get_user().get_repos()
+    return render_template('add_repos.html', repos=repos)
+
+
+@app.route('/panel', methods=['GET', 'POST'])
+def panel():
+    '''asdasdas'''
+    if not request.cookies.get("userToken"):  # If the cookie doesn't exist
+        return github_app.authorize(scope="user, repo")
+
+    userToken = request.cookies.get("userToken")
+    user_session = Github(userToken)
+    select = request.form.get('reposy')
+    repo = user_session.get_repo(select)
+    users = repo.get_collaborators()
+    select = select.split('/')[-1]
+    return render_template('panel.html', select=select, users=users)
 
 
 if __name__ == "__main__":
