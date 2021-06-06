@@ -67,17 +67,25 @@ def add_repos():
 
 @app.route('/panel', methods=['GET', 'POST'])
 def panel():
-    '''asdasdas'''
+    ''' Show repo selected, set a cookie for the repo, and show users.
+    Pending: Save users selected to show the information about them in some repo
+    '''
     if not request.cookies.get("userToken"):  # If the cookie doesn't exist
         return github_app.authorize(scope="user, repo")
 
     userToken = request.cookies.get("userToken")
     user_session = Github(userToken)
-    select = request.form.get('reposy')
+
+    select = request.form.get('repos_list')  # Get the repo name selected.
     repo = user_session.get_repo(select)
     users = repo.get_collaborators()
-    select = select.split('/')[-1]
-    return render_template('panel.html', select=select, users=users)
+    # Pretty print, without the author of repo
+    repo_name = select.split('/')[-1]
+
+    response = make_response(render_template(
+        'panel.html', repo_name=repo_name, users=users))
+    response.set_cookie("repo", select)
+    return response
 
 
 if __name__ == "__main__":
