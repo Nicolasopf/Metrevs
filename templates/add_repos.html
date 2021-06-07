@@ -6,7 +6,7 @@
     <body>
 	  <form method="post" action="{{ url_for('panel') }}">
         <h1>Chose Repository:</h1>
-		<select name="reposy">
+		<select name="repos_list">
 		  <option selected></option>
 	      {% for name in repos %}
 		  <option value="{{ name.full_name }}">{{ name.name }}</option>
