@@ -12,8 +12,8 @@ from github import Github
 app = Flask(__name__)  # Start flask application
 app.url_map.strict_slashes = False  # No needed slash at end
 # Set the client ID for OAuth2
-app.config['GITHUB_CLIENT_ID'] = 'f3a06304f838d1f05b3c'
-app.config['GITHUB_CLIENT_SECRET'] = '8f1cfe79f990bbd3a0340e265f66a2a222a4da8f'  # ^^
+app.config['GITHUB_CLIENT_ID'] = '8822d81236572bb9945d'
+app.config['GITHUB_CLIENT_SECRET'] = 'ebd6211b14a32306679128449d2ee7e58d451a47'  # ^^
 app.register_blueprint(app_views)  # Start blueprint
 github_app = Github_login(app)  # Enable login to the oauth2
 
