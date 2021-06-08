@@ -12,11 +12,25 @@ def division(num1, num2):
     return 0
 
 
-def subtract(datetime1, datetime2):
+def get_hours(datetime1, datetime2):
+    ''' Get the difference in hours. '''
     try:
-        return (datetime1 - datetime2)
+        if datetime1 > datetime2:
+            time_from_created = datetime1 - datetime2
+        else:
+            time_from_created = datetime2 - datetime1
+#        print("\n", datetime1, "\n", datetime2, "\n")
+        return time_from_created.seconds / 3600
     except:
         return 0
+
+
+def average_float(num1, pulls):
+    ''' Return in float of two points, the result. '''
+    result = 0
+    if num1 > 0 and pulls > 0:
+        result = num1 / pulls
+    return "{:.2f}".format(result)
 
 
 def prs_requests(token, repo):
@@ -57,90 +71,75 @@ def prs_requests(token, repo):
     merged_review_hours = 0
 
     for pr in pulls:
+        pull_date = pr.created_at
         if pr.state == "closed":
             closed += 1
             if pr.merged:
                 merged += 1
                 if pr.get_reviews().totalCount == 0:  # Check if its reviewed
                     merged_no_review += 1
-
-            # Get the avg time to merge from create:
-            merged_date = pr.merged_at
-            time_from_created = subtract(pull_date, merged_date)
-            if not isinstance(time_from_created, int):
-                merged_hours += time_from_created.seconds / 3600
+                # Get the avg time to merge from create:
+                merged_date = pr.merged_at
+                print(pull_date, "\n", merged_date)
+                merged_hours += get_hours(pull_date, merged_date)
 
             # Get the avg time to merge from first commit:
             try:
                 commit_date = pr.get_commits()[0].commit.committer.date
-                time_from_created = subtract(merged_date, commit_date)
-                if not isinstance(time_from_created, int):
-                    merged_commit_hours += time_from_created.seconds / 3600
+                merged_commit_hours += get_hours(merged_date, commit_date)
             except:
-                continue
+                pass
 
             # Get the avg time to merge from first comment:
             try:
                 comment_date = pr.get_issue_comments()[0].created_at
-                time_from_created = subtract(merged_date, commit_date)
-                if not isinstance(time_from_created, int):
-                    merged_comments_hours += time_from_created.seconds / 3600
+                merged_comments_hours += get_hours(merged_date, comment_date)
             except:
-                continue
+                pass
 
             # Get the avg time to merge from first review:
             try:
                 review_date = pr.get_reviews()[0].submitted_at
-                time_from_created = subtract(merged_date, review_date)
-                if not isinstance(time_from_created, int):
-                    merged_review_hours += time_from_created.seconds / 3600
+                merged_review_hours += get_hours(merged_date, review_date)
             except:
-                continue
+                pass
         else:
             open_prs += 1
 
         comments += pr.comments
         reviews += pr.get_reviews().totalCount
-
-        pull_date = pr.created_at
-
         # Get the avg time to first comment
         try:
             comment_date = pr.get_issue_comments()[0].created_at
-            time_from_created = subtract(pull_date, comment_date)
-            if not isinstance(time_from_created, int):
-                comment_hours += time_from_created.seconds / 3600
+            comment_hours += get_hours(pull_date, comment_date)
         except:
-            continue
+            pass
 
         # Get the avg time to first review:
         try:
             review_date = pr.get_reviews()[0].submitted_at
             time_from_created = subtract(pull_date, review_date)
-            if not isinstance(time_from_created, int):
-                review_hours += time_from_created.seconds / 3600
+            review_hours += get_hours(pull_date, review_date)
         except:
-            continue
+            pass
+
+    # NO merged - stats:
+    no_merged_total = prs - merged
+    closed_no_merged = closed - merged
 
     # Get the percentages:
-    comment_avg = '{:.2f}'.format(division(comments, prs))
-    avg_time_first_comment = '{:.2f}'.format(
-        division(comment_hours, pulls.totalCount))
-    avg_time_first_review = '{:.2f}'.format(
-        division(review_hours, pulls.totalCount))
-    avg_time_merge_create = '{:.2f}'.format(
-        division(merged_hours, pulls.totalCount))
-    avg_time_first_commit = '{:.2f}'.format(
-        division(merged_commit_hours, pulls.totalCount))
-    avg_time_merge_comment = '{:.2f}'.format(
-        division(merged_comments_hours, pulls.totalCount))
-    avg_time_merge_review = '{:.2f}'.format(
-        division(merged_review_hours, pulls.totalCount))
+    comment_avg = average_float(comments, prs)
+    avg_time_first_comment = average_float(comment_hours, prs)
+    avg_time_first_review = average_float(review_hours, prs)
+    avg_time_merge_create = average_float(merged_hours, prs)
+    avg_time_first_commit = average_float(merged_commit_hours, prs)
+    avg_time_merge_comment = average_float(merged_comments_hours, prs)
+    avg_time_merge_review = average_float(merged_review_hours, prs)
 
     return prs, open_prs, closed, merged, comments, merged_no_review, reviews,\
-        comment_avg, avg_time_first_comment, avg_time_first_review,\
-        avg_time_merge_create, avg_time_first_commit, avg_time_first_comment,\
-        avg_time_merge_comment, avg_time_merge_review
+        no_merged_total, closed_no_merged, comment_avg, avg_time_first_comment,\
+        avg_time_first_review, avg_time_merge_create, avg_time_first_commit,\
+        avg_time_first_comment, avg_time_merge_comment, avg_time_merge_review
 
 
 @app_views.route('/repos')
@@ -153,10 +152,10 @@ def show_repo_info():
     repo = request.cookies.get("repo")
 
     prs, open_prs, closed, merged, comments, merged_no_review, reviews,\
-        comment_avg, avg_time_first_comment, avg_time_first_review,\
-        avg_time_merge_create, avg_time_first_commit, avg_time_first_comment,\
-        avg_time_merge_comment, avg_time_merge_review = prs_requests(
-            token, repo)
+        no_merged_total, closed_no_merged, comment_avg, avg_time_first_comment,\
+        avg_time_first_review, avg_time_merge_create, avg_time_first_commit,\
+        avg_time_first_comment, avg_time_merge_comment, avg_time_merge_review\
+        = prs_requests(token, repo)
 
     return render_template('repos.html', prs=prs,
                            open_prs=open_prs,
@@ -165,6 +164,8 @@ def show_repo_info():
                            comments=comments,
                            merged_no_review=merged_no_review,
                            reviews=reviews,
+                           no_merged_total=no_merged_total,
+                           closed_no_merged=closed_no_merged,
                            comment_avg=comment_avg,
                            avg_time_first_comment=avg_time_first_comment,
                            avg_time_first_review=avg_time_first_review,
