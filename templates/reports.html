@@ -15,7 +15,7 @@
 	<script>
 		const text = document.getElementById('report').value
 		const generate_reports = () => {
-			fetch('http://127.0.0.1:5000/generate')
+			fetch('https://devmeasure.herokuapp.com/generate')
 				.then(response => response.json())
 				.then(data => console.log(data));
 		}

@@ -72,7 +72,6 @@ def generate_reports():
         sheet = client.open("GitHub-Report").get_worksheet(0)
 
     write = sheet.update('A1:P2', [data_name, data_values])
-    print(sheet)
 
     return flask.jsonify(prs)
 
