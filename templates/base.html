@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-widt, initial-scale=1.0">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/global.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/header.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/footer.css')}}">
+	{% block stylesheet %}{% endblock %}
+	<title>{% block title %}{% endblock %}</title>
+</head>
+
+{% macro render_header() %}
+<body>
+	<header>
+		<div class="wrapper">
+			<div class="logo">
+				<h1>LOGO</h1>
+			</div>
+			<div class="nav">
+				<div class="container">
+					<input type="checkbox" id="checkbox" class="menu__checkbox">
+					<ul class="nav__items">
+						<li><a href="">Panel</a></li>
+						<li><a href="">User</a></li>
+						<li><a href="">Repos</a></li>
+						<li><a href="">Reports</a></li>
+					</ul>
+					<label for="checkbox" class="menu__button"></label>
+				</div>
+			</div>
+			<div class="profile">
+				<div class="img"></div>
+				<span id="name">name</span>
+			</div>
+		</div>
+	</header>
+	{% endmacro %}
+	{% block content %}
+	{% endblock %}
+	{% macro render_footer() %}
+	<footer>
+	</footer>
+</body>
+{% endmacro %}
+
+</html>

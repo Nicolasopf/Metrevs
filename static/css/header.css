@@ -1,0 +1,133 @@
+header {
+	background-color: var(--second-color);
+}
+
+.wrapper {
+	display: grid;
+	grid-template-areas: 'logo menu profile';
+	grid-template-columns: 60% 20% 20%;
+	height: 50px;
+	border: 1px red solid;
+	position: relative;
+	padding-left: 3em;
+}
+
+.logo {
+	grid-area: logo;
+	display: flex;
+	align-items: center;
+}
+
+.nav {
+	grid-area: menu;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.container {
+	height: 70%;
+	border-right: 2px solid var(--primary-color);
+	position: absolute;
+	display: flex;
+	align-items: center;
+}
+
+.nav__items {
+	display: flex;
+}
+
+.nav__items>li {
+	padding: 1em;
+}
+
+.menu__button {
+	width: 30px;
+	height: 30px;
+	background: url('../imgs/burger-menu.svg') no-repeat center;
+}
+
+.menu__checkbox {
+	display: none;
+}
+
+.profile {
+	grid-area: profile;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	margin-left: 20px;
+}
+
+.img {
+	background: url('../imgs/profile.png') no-repeat center;
+	background-size: cover;
+	height: 30px;
+	width: 30px;
+	border-radius: 50%;
+}
+
+.profile>span {
+	margin-left: 20px;
+}
+
+.menu__button {
+	display: none;
+}
+
+/*========= RESPONSIVE DESIGN =============*/
+
+@media only screen and (max-width: 1024px) {
+
+	.wrapper {
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		padding: 0;
+	}
+	.container {
+		border: none;
+		position: inherit;
+	}
+
+	.nav__items {
+		display: none;
+		flex-direction: column;
+	}
+
+	.nav__items > a {
+		padding: 1em;
+	}
+
+	.menu__button {
+		display: block;
+	}
+
+	.profile {
+		display: none;
+	}
+
+	.menu__checkbox:checked ~ .nav__items {
+		display: flex;
+
+		background-color: var(--green);
+		position: absolute;
+		top: calc(100% + 2em);
+		left: 1em;
+		right: 1em;
+	}
+
+	.menu__checkbox:checked ~ .nav__items > li{
+		display: flex;
+		justify-content: center;
+		padding: 0;
+	}
+	.menu__checkbox:checked ~ .nav__items > li > a{
+		text-align: center;
+		width: 100%;
+		padding: 1em;
+	}
+	.menu__checkbox:checked ~ .menu__button {
+		background: url('../imgs/x.svg');
+	}
+}
