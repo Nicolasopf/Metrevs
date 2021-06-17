@@ -28,7 +28,7 @@
 }
 
 .sub-container1{
-    background-image: url(imgs/data2.jpg);
+    background-image: url(../../imgs/data2.jpg);
     background-size: cover;
     background-position: bottom;
     width: 40%;
