@@ -1,16 +1,20 @@
-Total PRs: {{ prs }}<br>
-Open PRs: {{ open_prs }}<br>
-Closed PRs: {{ closed }}<br>
-Merged PRs: {{ merged }}<br>
-No merged PRs closed: {{ closed_no_merged }}<br>
-No merged including open: {{ no_merged_total }}<br>
-Merged without review: {{ merged_no_review }}<br>
-No of comments in PRs: {{ comments }}<br>
-No of reviews in PRs: {{ reviews }}<br>
-AVG comments PRs: {{ comment_avg }}<br>
-AVG time to first comment in PRs: {{ avg_time_first_comment }}<br>
-AVG time to first review: {{ avg_time_first_review }}<br>
-AVG time merge from create: {{ avg_time_merge_create }}<br>
-AVG time merge from first commit: {{ avg_time_first_commit }}<br>
-AVG time merge from first comment: {{ avg_time_merge_comment }}<br>
-AVG time merge from first review: {{ avg_time_merge_review }}<br>
+{% for key, value in repos_data.items() %}
+<p>Repo: {{ key }}</p>
+Total PRs: {{ value[0] }}<br>
+Open PRs: {{ value[1] }}<br>
+Closed PRs: {{ value[2] }}<br>
+Merged PRs: {{ value[3] }}<br>
+No merged PRs closed: {{ value[4] }}<br>
+No merged including open: {{ value[5] }}<br>
+Merged without review: {{ value[6] }}<br>
+No of comments in PRs: {{ value[7] }}<br>
+No of reviews in PRs: {{ value[8] }}<br>
+AVG comments PRs: {{ value[9] }}<br>
+AVG time to first comment in PRs: {{ value[10] }}<br>
+AVG time to first review: {{ value[11] }}<br>
+AVG time merge from create: {{ value[12] }}<br>
+AVG time merge from first commit: {{ value[13] }}<br>
+AVG time merge from first comment: {{ value[14] }}<br>
+AVG time merge from first review: {{ value[15] }}<br>
+<br><br>
+{% endfor %}
