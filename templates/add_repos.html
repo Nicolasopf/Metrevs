@@ -1,17 +1,30 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <title>Repos</title>
-    </head>
-    <body>
-	  <form method="post" action="{{ url_for('panel') }}">
-        <h1>Chose Repository:</h1>
-		<select name="repos_list">
-		  <option selected></option>
-	      {% for name in repos %}
-		  <option value="{{ name.full_name }}">{{ name.name }}</option>
-		  {% endfor %}
-	    </select>
-		<button type="submit">Next</button>
-    </body>
-</html>
+{% extends "base.html" %}
+{% from "base.html" import render_header %}
+{% from "base.html" import render_footer %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/addrepos.css')}}">
+{% endblock %}
+{% block content %}
+{{ render_header() }}
+<main>
+  <section id="first-step">
+	<div class="container">
+	  <h1>Choose your repositories:</h1>
+	  <div class="addrepos">
+		<h2>Add repositories</h2>
+		<input type="checkbox" id="arrow" class="toggle">
+		<label for="arrow" class="arrow-icon">&#9776;</label>
+		<h3>Added repositories</h3>
+		<div class="slide_menu">
+		  <form method="post" action="{{ url_for('panel') }}">
+			{% for name in repos %}
+			<p class="items"><input type="checkbox" name="repos_list" value="{{ name.full_name }}">{{ name.name }}</p>
+			{% endfor %}
+		</div>
+	  </div>
+	  <p><button type="submit">Add</button></p>
+	</div>
+  </section>
+</main>
+{{ render_footer() }}
+{% endblock %}
