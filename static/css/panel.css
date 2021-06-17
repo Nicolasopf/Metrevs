@@ -1,0 +1,77 @@
+#summary h1{
+    text-align: left;
+    color: #23A18A;
+}
+
+#summary h2{
+    color: #23A18A;
+}
+
+#summary .container{
+	margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.sub-menu{
+    width: 100%;
+    display: flex;
+	justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.title{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.select-items{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.sub-select{
+	padding: 0 10px;
+	display: flex;
+    flex-wrap: wrap;
+	justify-content: space-between;
+	width:170px;
+}
+
+.toggle {
+    display: none;
+}
+
+.arrow-icon {
+    cursor: pointer;
+}
+
+.toggle:checked ~ .slide_menu {
+    display: block;
+}
+
+.slide_menu {
+    display: none;
+    background: transparent;
+    width: 100%;
+    margin: auto;
+    height: 300px;
+    border: solid 1px;
+    z-index: 50;
+    overflow: auto;
+}
+.calendar{
+	padding: 0 10px;
+	display: flex;
+    flex-wrap: wrap;
+	justify-content: space-between;
+	width: 220px;
+}
+.calendar input {
+	margin: 0 5px;
+	max-height: 30px;
+	border: none;
+	background-color: transparent;
+	color: #fff;
+}
