@@ -1,0 +1,45 @@
+#features h3{
+    text-align: center;
+    color: #23A18A;
+    margin-bottom: 15px;
+}
+
+#features h4{
+    margin: 5px 0 0 0;
+    color: #23A18A;
+}
+
+#features h5{
+    width: 100%;
+    font-weight: normal;
+}
+
+#features .container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#features .sub-container{
+    width: 60%;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.sub-container1{
+    background-image: url(data2.jpg);
+    background-size: cover;
+    background-position: bottom;
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#features article{
+    width: 90%;
+    margin: 15px 0;
+    background-color: rgba(255,255,255,0.05);
+    border: 15px solid rgba(255,255,255,0.01);
+}
