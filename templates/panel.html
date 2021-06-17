@@ -6,21 +6,34 @@
 {% endblock %}
 {% block content %}
 {{ render_header() }}
-	<h1>We will display a sidebar soon, while it happens, you can join to the subdirectories that are not available yet too in:</h1>
-	<br>
-	<a href="/users">Users<a><br>
-	<a href="/repos">Repos<a><br>
-	<a href="/reports">Reports<a><br>
-	<a href="/teams">Teams<a><br>
-	<br>
-	<h1>Repo:</h1>
-	<h2>{{ repo_name }}</h2>
-	<h1>Users:</h1>
-	<select name="devs">
-		<option selected></option>
-		{% for name in users %}
-		<option>{{ name.login }}</option>
-		{% endfor %}
-	</select>
-	{{ render_footer() }}
-	{% endblock %}
+<main>
+  <section id="summary">
+    <div class="container">
+	  <div class="sub-menu">
+		<div class="title">
+		  <h1>Summary:</h1>
+		  <h2>{{ repo_name }}</h2>
+		</div>
+		<div class="select-items">
+		  <div class="sub-select">
+			<h2>Users:</h2>
+			<input type="checkbox" id="arrow" class="toggle">
+			<label for="arrow" class="arrow-icon">&#9776;</label>
+			<div class="slide_menu">
+			  {% for name in users %}
+			  <p class="items"><input type="checkbox" name="username">{{ name.login }}</p>
+			  {% endfor %}
+			</div>
+		  </div>
+		  <div class="calendar">
+			<h2>Date:</h2>
+			<input type="date" id="start" name="trip-start" value="" min="2010-01-01" max="2021-06-17">
+			<label for="start" class="arrow-icon1">&#9776;</label>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </section>
+</main>
+{{ render_footer() }}
+{% endblock %}
