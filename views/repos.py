@@ -145,17 +145,18 @@ def prs_requests(token, repo):
 @app_views.route('/repos')
 def show_repo_info():
     ''' Show the info for the repo selected. This repo is located at cookie. '''
-    if not request.cookies.get("repo") or not request.cookies.get("userToken"):
+    if not request.cookies.get("repos") or not request.cookies.get("userToken"):
         return redirect(url_for(panel))
 
     token = request.cookies.get("userToken")
-    repo = request.cookies.get("repo")
+    repo = request.cookies.get("repos").split(", ")
+    print(repo)
 
     prs, open_prs, closed, merged, comments, merged_no_review, reviews,\
         no_merged_total, closed_no_merged, comment_avg, avg_time_first_comment,\
         avg_time_first_review, avg_time_merge_create, avg_time_first_commit,\
         avg_time_first_comment, avg_time_merge_comment, avg_time_merge_review\
-        = prs_requests(token, repo)
+        = prs_requests(token, repo[1])
 
     return render_template('repos.html', prs=prs,
                            open_prs=open_prs,
