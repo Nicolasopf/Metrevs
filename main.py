@@ -91,7 +91,7 @@ def panel():
             if collaborator not in users:
                 users.append(collaborator)
         # Pretty print, without the author of repo
-    repo_name = repo
+    repo_name = select[len(select) - 1]
 
     response = make_response(render_template(
         'panel.html', repo_name=repo_name, users=users))
