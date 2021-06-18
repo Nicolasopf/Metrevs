@@ -20,11 +20,13 @@
 			<input type="checkbox" id="arrow" class="toggle">
 			<label for="arrow" class="arrow-icon">&#9776;</label>
 			<div class="slide_menu">
-			  {% for name in users %}
-			  <p class="items"><input type="checkbox" name="username">{{ name.login }}</p>
-			  {% endfor %}
+			  <form method="post" action="{{ url_for('app_views.show_repo_info') }}">
+				{% for name in users %}
+				<p class="items"><input type="checkbox" name="username" value="{{ name.login }}">{{ name.login }}</p>
+				{% endfor %}
 			</div>
 		  </div>
+		  <p><button type="submit">submit</button></p>
 		  <div class="calendar">
 			<h2>Date:</h2>
 			<input type="date" id="start" name="trip-start" value="" min="2010-01-01" max="2021-06-17">

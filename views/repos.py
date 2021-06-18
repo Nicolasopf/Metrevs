@@ -19,7 +19,6 @@ def get_hours(datetime1, datetime2):
             time_from_created = datetime1 - datetime2
         else:
             time_from_created = datetime2 - datetime1
-#        print("\n", datetime1, "\n", datetime2, "\n")
         return time_from_created.seconds / 3600
     except:
         return 0
@@ -34,7 +33,9 @@ def average_float(num1, pulls):
 
 
 def prs_requests(token, repo):
-    ''' Retrieves:
+    '''
+    Function with all requests needed to get data; prs = pull requests.
+    Retrieves:
     Total PRs: prs
     Open PRs: open_prs
     Closed PRs: closed
@@ -80,7 +81,6 @@ def prs_requests(token, repo):
                     merged_no_review += 1
                 # Get the avg time to merge from create:
                 merged_date = pr.merged_at
-                print(pull_date, "\n", merged_date)
                 merged_hours += get_hours(pull_date, merged_date)
 
             # Get the avg time to merge from first commit:
@@ -142,35 +142,18 @@ def prs_requests(token, repo):
         avg_time_first_comment, avg_time_merge_comment, avg_time_merge_review
 
 
-@app_views.route('/repos')
+@app_views.route('/repos', methods=["GET", "POST"])
 def show_repo_info():
     ''' Show the info for the repo selected. This repo is located at cookie. '''
     if not request.cookies.get("repos") or not request.cookies.get("userToken"):
         return redirect(url_for(panel))
 
+#    users = request.form.getlist("username")
     token = request.cookies.get("userToken")
-    repo = request.cookies.get("repos").split(", ")
-    print(repo)
+    repos = request.cookies.get("repos").split(", ")
 
-    prs, open_prs, closed, merged, comments, merged_no_review, reviews,\
-        no_merged_total, closed_no_merged, comment_avg, avg_time_first_comment,\
-        avg_time_first_review, avg_time_merge_create, avg_time_first_commit,\
-        avg_time_first_comment, avg_time_merge_comment, avg_time_merge_review\
-        = prs_requests(token, repo[1])
+    repos_data = {}
+    for repo in repos:
+        repos_data[repo] = prs_requests(token, repo)
 
-    return render_template('repos.html', prs=prs,
-                           open_prs=open_prs,
-                           closed=closed,
-                           merged=merged,
-                           comments=comments,
-                           merged_no_review=merged_no_review,
-                           reviews=reviews,
-                           no_merged_total=no_merged_total,
-                           closed_no_merged=closed_no_merged,
-                           comment_avg=comment_avg,
-                           avg_time_first_comment=avg_time_first_comment,
-                           avg_time_first_review=avg_time_first_review,
-                           avg_time_merge_create=avg_time_merge_create,
-                           avg_time_first_commit=avg_time_first_commit,
-                           avg_time_merge_comment=avg_time_merge_comment,
-                           avg_time_merge_review=avg_time_merge_review)
+    return render_template('repos.html', repos_data=repos_data)
