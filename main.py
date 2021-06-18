@@ -80,7 +80,7 @@ def panel():
     user_session = Github(userToken)
 
     select = request.form.getlist('repos_list')  # Get the repo name selected.
-    if not select:
+    if not select and request.cookies.get("repos") == "":
         return redirect(url_for("add_repos"))
     users = []
 
@@ -91,7 +91,7 @@ def panel():
             if collaborator not in users:
                 users.append(collaborator)
         # Pretty print, without the author of repo
-    repo_name = "TESTING"
+    repo_name = repo
 
     response = make_response(render_template(
         'panel.html', repo_name=repo_name, users=users))
