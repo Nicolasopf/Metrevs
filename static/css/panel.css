@@ -17,7 +17,7 @@
 	margin-bottom: 40px;
     width: 100%;
     display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
     flex-wrap: wrap;
 	background: #333;
 	padding: 0 10px;
@@ -70,8 +70,8 @@
 	padding: 0 10px;
 	display: flex;
     flex-wrap: wrap;
-	justify-content: space-between;
-	width: 220px;
+	justify-content: space-around;
+	width: 500px;
 }
 .calendar input {
 	margin: 0 5px;
@@ -80,6 +80,7 @@
 	background-color: transparent;
 	color: #fff;
 }
+
 .chart-container{
 	width: 40%;
 	margin: 0 5%;
