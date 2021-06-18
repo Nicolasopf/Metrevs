@@ -1,4 +1,4 @@
-# WayDev_clone
+# Metrevs
 Create a web platform to evaluate team perfomance in GitHub repositories.
 
 ## Install
@@ -9,19 +9,16 @@ sudo apt update
 sudo apt install python3
 sudo apt install python3-pip
 sudo pip3 install GitHub-Flask
+sudo pip3 install gspread
 sudo pip3 install PyGithub
 ```
 
 ### Start application
 If you want to test or use in your localhost, don't forget to create an OAuth app in https://github.com/settings/developers
-Also, change the clien_id and client_secret in the main.py.
-
-Test in localhost:
-client_id = f3a06304f838d1f05b3c
-client_secret = 8f1cfe79f990bbd3a0340e265f66a2a222a4da8f
+Also, use the clien_id and client_secret as environment variables when executing main.py.
 
 ```
-python3 github_login.py
+GITHUB_CLIENT_ID=id GITHUB_CLIENT_SECRET=secret main.py.py
 ```
 
 You can go to the website at port http://127.0.0.1:5000.
