@@ -3,6 +3,7 @@
 from views import app_views
 from flask import render_template, request, make_response, redirect, url_for
 from github import Github
+from datetime import datetime
 
 
 def division(num1, num2):
@@ -32,7 +33,7 @@ def average_float(num1, pulls):
     return "{:.2f}".format(result)
 
 
-def prs_requests(token, repo, users):
+def prs_requests(token, repo, users, start_date, end_date):
     '''
     Function with all requests needed to get data; prs = pull requests.
     Retrieves:
@@ -68,12 +69,19 @@ def prs_requests(token, repo, users):
                                 'comment_hours': 0, 'review_hours': 0, 'merged_hours': 0, 'merged_commit_hours': 0, 'merged_comments_hours': 0, 'merged_review_hours': 0}
 
     for pr in pulls:
+        pull_date = pr.created_at
+        try:
+            if pull_date > start_date and pull_date < end_date:
+                pass
+            else:
+                continue
+        except:
+            pass
         user = pr.user.login
         if user not in dict_users.keys():
             continue
 
         dict_users[user]['prs'] += 1
-        pull_date = pr.created_at
         if pr.state == "closed":
             dict_users[user]['closed'] += 1
             if pr.merged:
@@ -157,14 +165,26 @@ def show_repo_info():
         return redirect(url_for('add_repos'))
 
     users = request.form.getlist("username")
-    trip_start = request.form.getlist("trip-start")
-    trip_end = request.form.getlist("trip-end")
+
+    date = request.form.get("trip-start").split("-")
+    temp_date = []
+    for num in date:
+        temp_date.append(int(num))
+    start_date = datetime(temp_date[0], temp_date[1], temp_date[2])
+
+    date = request.form.get("trip-end").split("-")
+    temp_date = []
+    for num in date:
+        temp_date.append(int(num))
+    end_date = datetime(temp_date[0], temp_date[1], temp_date[2])
+
     token = request.cookies.get("userToken")
     repos = request.cookies.get("repos").split(", ")
 
     repos_data = {}
     for repo in repos:
-        repos_data[repo] = prs_requests(token, repo, users)
+        repos_data[repo] = prs_requests(
+            token, repo, users, start_date, end_date)
 
     '''
     Set cookie for charts:
