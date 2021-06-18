@@ -167,16 +167,22 @@ def show_repo_info():
     users = request.form.getlist("username")
 
     date = request.form.get("trip-start").split("-")
-    temp_date = []
-    for num in date:
-        temp_date.append(int(num))
-    start_date = datetime(temp_date[0], temp_date[1], temp_date[2])
+    if date != ['']:
+        temp_date = []
+        for num in date:
+            temp_date.append(int(num))
+        start_date = datetime(temp_date[0], temp_date[1], temp_date[2])
+    else:
+        start_date = datetime(1, 1, 1)
 
     date = request.form.get("trip-end").split("-")
-    temp_date = []
-    for num in date:
-        temp_date.append(int(num))
-    end_date = datetime(temp_date[0], temp_date[1], temp_date[2])
+    if date != ['']:
+        temp_date = []
+        for num in date:
+            temp_date.append(int(num))
+        end_date = datetime(temp_date[0], temp_date[1], temp_date[2])
+    else:
+        end_date = datetime.now()
 
     token = request.cookies.get("userToken")
     repos = request.cookies.get("repos").split(", ")
