@@ -3,6 +3,7 @@
 {% from "base.html" import render_footer %}
 {% block stylesheet %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/panel.css')}}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 {% block content %}
 {{ render_header() }}
@@ -34,6 +35,11 @@
 		  </div>
 		</div>
 	  </div>
+	  <canvas id="myChart1" width="200" height="200"></canvas>
+	  <canvas id="myChart2" width="200" height="200"></canvas>
+	  <canvas id="myChart3" width="200" height="200"></canvas>
+	  <canvas id="myChart4" width="200" height="200"></canvas>
+	  <script src="../static/scripts/charts.js"></script>
 	</div>
   </section>
 </main>
