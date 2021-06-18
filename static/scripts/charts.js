@@ -96,12 +96,12 @@ for (cookie of cookies) {
 if (prs_array[0] != "0") {
 	create_chart("myChart1", "polarArea", ["Total PRs", "Open PRs", "Closed PRs"], "PRs stats", prs_array);
 }
-if (time_merge_obj[0]) {
+if (Object.keys(time_merge_obj).length !== 0) {
 	create_chart("myChart2", "doughnut", Object.keys(time_merge_obj), "Time merge from create", Object.values(time_merge_obj));
 }
-if (comments_obj[0]) {
+if (Object.keys(comments_obj).length !== 0) {
 	create_chart("myChart3", "bar", Object.keys(comments_obj), "Comments in PRs", Object.values(comments_obj));
 }
-if (merged_obj[0]) {
+if (Object.keys(merged_obj).length !== 0) {
 	create_chart("myChart4", "pie", Object.keys(merged_obj), "Merged PRs", Object.values(merged_obj));
 }
