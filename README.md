@@ -1,5 +1,6 @@
 # Metrevs
-Create a web platform to evaluate team perfomance in GitHub repositories.
+Web platform to evaluate developers performance in GitHub repositories.
+![image](https://user-images.githubusercontent.com/69660332/122605133-a59bd300-d03c-11eb-877b-6b7589836048.png)
 
 ## Install
 ### Requirement: ubuntu 18:04
