@@ -1,20 +1,50 @@
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+</head>
+
 {% for key, value in repos_data.items() %}
-<p>Repo: {{ key }}</p>
-Total PRs: {{ value[0] }}<br>
-Open PRs: {{ value[1] }}<br>
-Closed PRs: {{ value[2] }}<br>
-Merged PRs: {{ value[3] }}<br>
-No merged PRs closed: {{ value[4] }}<br>
-No merged including open: {{ value[5] }}<br>
-Merged without review: {{ value[6] }}<br>
-No of comments in PRs: {{ value[7] }}<br>
-No of reviews in PRs: {{ value[8] }}<br>
-AVG comments PRs: {{ value[9] }}<br>
-AVG time to first comment in PRs: {{ value[10] }}<br>
-AVG time to first review: {{ value[11] }}<br>
-AVG time merge from create: {{ value[12] }}<br>
-AVG time merge from first commit: {{ value[13] }}<br>
-AVG time merge from first comment: {{ value[14] }}<br>
-AVG time merge from first review: {{ value[15] }}<br>
+<h2>Repo: {{ key }}</h2>
+<table style="width:100%">
+  <tr>
+	<th></th>
+    <th>Total PRs</th>
+    <th>Open PRs</th>
+    <th>Closed PRs</th>
+    <th>Merged PRs</th>
+    <th>Merged without review</th>
+	<th>No of comments in PRs</th>
+	<th>No of reviews in PRs</th>
+	<th>AVG comments PRs</th>
+	<th>AVG time to first comment in PRs</th>
+	<th>AVG time to first review</th>
+	<th>AVG time merge from create</th>
+	<th>AVG time merge from first commit</th>
+	<th>AVG time merge from first comment</th>
+	<th>AVG time merge from first review</th>
+  </tr>
+	{% for user, dics in value.items() %}
+  <tr>
+    <td>{{ user }}</td>
+	<td>{{ dics["prs"] }}</td>
+	<td>{{ dics["open_prs"] }}</td>
+	<td>{{ dics["closed"] }}</td>
+	<td>{{ dics["merged"] }}</td>
+	<td>{{ dics["merged_no_review"] }}</td>
+	<td>{{ dics["comments"] }}</td>
+	<td>{{ dics["reviews"] }}</td>
+	<td>{{ dics["comment_avg"] }}</td>
+	<td>{{ dics["avg_time_first_comment"] }}</td>
+	<td>{{ dics["avg_time_first_review"] }}</td>
+	<td>{{ dics["avg_time_merge_create"] }}</td>
+	<td>{{ dics["avg_time_first_commit"] }}</td>
+	<td>{{ dics["avg_time_merge_comment"] }}</td>
+	<td>{{ dics["avg_time_merge_review"] }}</td>
+  </tr>
+	{% endfor %}
+</table>
 <br><br>
 {% endfor %}
