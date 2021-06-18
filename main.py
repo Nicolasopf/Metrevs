@@ -1,20 +1,24 @@
 #!/usr/bin/python3
 ''' Starts flask application. Allow github oauth2 login and view /panel'''
-
-
 from flask import Flask, render_template, request, url_for, redirect, make_response
 from flask_github import GitHub as Github_login
 from flask import Blueprint
 from views import app_views
 from github import Github
+from os import urandom, getenv as env
 
+
+if not env("GITHUB_CLIENT_ID") or not env("GITHUB_CLIENT_SECRET"):
+    print("Please use environment variables in order to run the app.\
+ \nSyntax: GITHUB_CLIENT_ID=client_id GITHUB_CLIENT_SECRET=secret ./main.py")
+    exit()
 
 app = Flask(__name__)  # Start flask application
 app.url_map.strict_slashes = False  # No needed slash at end
-app.secret_key = "b'\xd7\x9b\x14fc|\xee\x85d9\x84Ol\x0f\x02.\x9b\x01\xb2\xdd\xf3\xe4\x88\x92'"
+app.secret_key = urandom(24)
 # Set the client ID for OAuth2
-app.config['GITHUB_CLIENT_ID'] = 'f3a06304f838d1f05b3c'
-app.config['GITHUB_CLIENT_SECRET'] = '8f1cfe79f990bbd3a0340e265f66a2a222a4da8f'  # ^^
+app.config['GITHUB_CLIENT_ID'] = env("GITHUB_CLIENT_ID")
+app.config['GITHUB_CLIENT_SECRET'] = env("GITHUB_CLIENT_SECRET")  # ^^
 app.register_blueprint(app_views)  # Start blueprint
 github_app = Github_login(app)  # Enable login to the oauth2
 
@@ -56,7 +60,7 @@ def after_login(access_token):
 
 @app.route('/add_repos')
 def add_repos():
-    ''' add repositories to local storage '''
+    ''' add repositories to cookies. '''
     if not request.cookies.get("userToken"):  # If the cookie doesn't exist
         return github_app.authorize(scope="user, repo")
 
@@ -68,9 +72,7 @@ def add_repos():
 
 @app.route('/panel', methods=['GET', 'POST'])
 def panel():
-    ''' Show repo selected, set a cookie for the repo, and show users.
-    Pending: Save users selected to show the information about them in some repo
-    '''
+    ''' Show repo selected, set a cookie for the repo, and show users. '''
     if not request.cookies.get("userToken"):  # If the cookie doesn't exist
         return github_app.authorize(scope="user, repo")
 
