@@ -10,15 +10,18 @@
 #summary .container{
 	margin-top: 50px;
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
 }
 
 .sub-menu{
+	margin-bottom: 40px;
     width: 100%;
     display: flex;
 	justify-content: space-between;
     flex-wrap: wrap;
+	background: #333;
+	padding: 0 10px;
+	border-radius: 10px;
 }
 
 .title{
@@ -52,10 +55,12 @@
 }
 
 .slide_menu {
+	position: absolute;
     display: none;
-    background: transparent;
-    width: 100%;
+    background: #333;
+    width: 150px;
     margin: auto;
+	margin-top: 34px;
     height: 300px;
     border: solid 1px;
     z-index: 50;
@@ -74,4 +79,8 @@
 	border: none;
 	background-color: transparent;
 	color: #fff;
+}
+.chart-container{
+	width: 40%;
+	margin: 0 5%;
 }
