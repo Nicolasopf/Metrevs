@@ -76,7 +76,6 @@ def prs_requests(token, repo, users, start_date, end_date):
             elif start_date < pull_date and end_date > pull_date:
                 pass
             else:
-                print(pull_date, start_date, end_date)
                 continue
         except:
             pass
@@ -173,7 +172,6 @@ def show_repo_info():
     if date:
         temp_date = []
         for num in date.split("-"):
-            print(num + '\n\n')
             temp_date.append(int(num))
         start_date = datetime(temp_date[0], temp_date[1], temp_date[2])
     else:
