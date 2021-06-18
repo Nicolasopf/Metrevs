@@ -71,16 +71,19 @@ def prs_requests(token, repo, users, start_date, end_date):
     for pr in pulls:
         pull_date = pr.created_at
         try:
-            if pull_date > start_date and pull_date < end_date:
+            if start_date == 0:
+                pass
+            elif start_date < pull_date and end_date > pull_date:
                 pass
             else:
+                print(pull_date, start_date, end_date)
                 continue
         except:
             pass
+
         user = pr.user.login
         if user not in dict_users.keys():
             continue
-
         dict_users[user]['prs'] += 1
         if pr.state == "closed":
             dict_users[user]['closed'] += 1
@@ -166,19 +169,20 @@ def show_repo_info():
 
     users = request.form.getlist("username")
 
-    date = request.form.get("trip-start").split("-")
-    if date != ['']:
+    date = request.form.get("trip-start")
+    if date:
         temp_date = []
-        for num in date:
+        for num in date.split("-"):
+            print(num + '\n\n')
             temp_date.append(int(num))
         start_date = datetime(temp_date[0], temp_date[1], temp_date[2])
     else:
-        start_date = datetime(1, 1, 1)
+        start_date = 0
 
-    date = request.form.get("trip-end").split("-")
-    if date != ['']:
+    date = request.form.get("trip-end")
+    if date:
         temp_date = []
-        for num in date:
+        for num in date.split("-"):
             temp_date.append(int(num))
         end_date = datetime(temp_date[0], temp_date[1], temp_date[2])
     else:
