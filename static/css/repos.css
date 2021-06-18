@@ -1,0 +1,112 @@
+#repository h1 {
+    text-align: left;
+    color: #23A18A;
+}
+
+#repository h2 {
+    color: #23A18A;
+}
+
+#repository .container{
+	margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#repository h2 {
+    color: #23A18A;
+}
+
+.tablename{
+	width: 100%;
+	margin: 30px 0 10px 0;
+	text-align: left;
+}
+
+.tables {
+	overflow: auto;
+    width: 100%;
+	scrollbar-color: #23A18A #333;
+	scrollbar-width: 10px;
+}
+
+#repository table{
+	width: 1600px;
+}
+
+#repository tr, th, td {
+	text-align: center;
+	border: 1px solid #23A18A;
+}
+
+.celluser {
+	width:100px;
+}
+
+.sub-menu {
+    width: 100%;
+    display: flex;
+	justify-content: space-between;
+    flex-wrap: wrap;
+	background-color: #333;
+	padding: 0 10px;
+	border-radius: 10px;
+}
+
+.title {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.select-items {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.sub-select {
+	padding: 0 10px;
+	display: flex;
+    flex-wrap: wrap;
+	justify-content: space-between;
+	width:170px;
+}
+
+.toggle {
+    display: none;
+}
+
+.arrow-icon {
+    cursor: pointer;
+}
+
+.toggle:checked ~ .slide_menu {
+    display: block;
+}
+
+.slide_menu {
+	position: absolute;
+    display: none;
+    background: #333;
+    width: 150px;
+    margin: auto;
+	margin-top: 34px;
+    height: 300px;
+    border: solid 1px;
+    z-index: 50;
+    overflow: auto;
+}
+.calendar{
+	padding: 0 10px;
+	display: flex;
+    flex-wrap: wrap;
+	justify-content: space-between;
+	width: 220px;
+}
+.calendar input {
+	margin: 0 5px;
+	max-height: 30px;
+	border: none;
+	background-color: transparent;
+	color: #fff;
+}
