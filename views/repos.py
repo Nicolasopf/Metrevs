@@ -157,6 +157,8 @@ def show_repo_info():
         return redirect(url_for('add_repos'))
 
     users = request.form.getlist("username")
+    trip_start = request.form.getlist("trip-start")
+    trip_end = request.form.getlist("trip-end")
     token = request.cookies.get("userToken")
     repos = request.cookies.get("repos").split(", ")
 
