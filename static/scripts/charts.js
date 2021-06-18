@@ -39,7 +39,7 @@ function create_chart(chart_name, chart_type, items, label_name, items_data) {
 
 var cookies = document.cookie.split(";");
 for (cookie of cookies) {
-	if (cookie.indexOf("chartsData") != 1) {
+	if (cookie.indexOf("chartsData") != -1) {
 		var prs_array = cookie.split("chartsData=")[1].slice(1, -1).replace(/\\054/g, ",").split(", ")
 		break;
 	}
