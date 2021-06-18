@@ -91,7 +91,12 @@ def panel():
             if collaborator not in users:
                 users.append(collaborator)
         # Pretty print, without the author of repo
-    repo_name = select[len(select) - 1]
+
+    try:
+        repo_name = select[len(select) - 1]
+    except:
+        repo_name = request.cookies.get("repos").split(", ")
+        repo_name = repo_name[len(repo_name) - 1]
 
     response = make_response(render_template(
         'panel.html', repo_name=repo_name, users=users))
