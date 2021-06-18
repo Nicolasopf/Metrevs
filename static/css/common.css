@@ -9,6 +9,10 @@ body {
     font-family: 'Teko', sans-serif;
     background-color: #222;
     color: #fff;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 header {
@@ -42,6 +46,7 @@ section {
 
 footer {
 	background-color: #2a9579;
+    width: 100%;
 }
 
 footer .container {
