@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 ''' View /repos show repo information processed. '''
 from views import app_views
-from flask import render_template, request
+from flask import render_template, request, make_response, redirect, url_for
 from github import Github
 
 
@@ -154,7 +154,7 @@ def prs_requests(token, repo, users):
 def show_repo_info():
     ''' Show the info for the repo selected. This repo is located at cookie. '''
     if not request.cookies.get("repos") or not request.cookies.get("userToken"):
-        return redirect(url_for(panel))
+        return redirect(url_for('add_repos'))
 
     users = request.form.getlist("username")
     token = request.cookies.get("userToken")
@@ -164,4 +164,18 @@ def show_repo_info():
     for repo in repos:
         repos_data[repo] = prs_requests(token, repo, users)
 
-    return render_template('repos.html', repos_data=repos_data)
+    '''
+    Set cookie for charts:
+    Format: "," for each item, "." for each chart.
+    '''
+    resp = make_response(render_template('repos.html', repos_data=repos_data))
+    prs = 0
+    open_prs = 0
+    closed = 0
+    for user in repos_data[repo].values():
+        prs += user['prs']
+        open_prs += user['open_prs']
+        closed += user['closed']
+
+    resp.set_cookie("chartsData", "{}, {}, {}".format(prs, open_prs, closed))
+    return resp
