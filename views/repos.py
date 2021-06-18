@@ -166,16 +166,24 @@ def show_repo_info():
 
     '''
     Set cookie for charts:
-    Format: "," for each item, "." for each chart.
+    Format: "," for each item, "-" for each chart.
     '''
     resp = make_response(render_template('repos.html', repos_data=repos_data))
     prs = 0
     open_prs = 0
     closed = 0
-    for user in repos_data[repo].values():
+    time_merge = ""
+    comments = ""
+    merged = ""
+    for key, user in repos_data[repo].items():
         prs += user['prs']
         open_prs += user['open_prs']
         closed += user['closed']
+        time_merge += "{}:{}, ".format(key,
+                                       float(user['avg_time_merge_create']))
+        comments += "{}:{}, ".format(key, user['comments'])
+        merged += "{}:{}, ".format(key, user['merged'])
 
-    resp.set_cookie("chartsData", "{}, {}, {}".format(prs, open_prs, closed))
+    resp.set_cookie("chartsData", "{}, {}, {}-{}-{}-{}".format(prs,
+                                                               open_prs, closed, time_merge, comments, merged))
     return resp
