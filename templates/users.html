@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Repos</title>
+    </head>
+    <body>
+	  <h1>Chose Repository:</h1>
+	  {% for name in users %}
+	  <li>{{ name.login }}</li>
+	  {% endfor %}
+	</body>
+</html>
