@@ -78,6 +78,8 @@ def panel():
     user_session = Github(userToken)
 
     select = request.form.getlist('repos_list')  # Get the repo name selected.
+    if not select:
+        return redirect(url_for("add_repos"))
     users = []
 
     for repo in select:
