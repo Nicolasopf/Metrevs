@@ -39,12 +39,14 @@ function create_chart(chart_name, chart_type, items, label_name, items_data) {
 
 var cookies = document.cookie.split(";");
 for (cookie of cookies) {
-	if (cookie.indexOf("chartsData") != 1) {
-		var prs_array = cookie.split("chartsData=")[1].slice(1, -1).replace(/\\054/g, ",").split(", ")
+	if (cookie.indexOf("chartsData") != -1) {
+		var arrays = cookie.split("chartsData=")[1].slice(1, -1).replace(/\\054/g, ",").split("-");
+		var prs_array = arrays[0].split(",");
+		var time_merge = arrays[1];
 		break;
 	}
 }
-var types = ['bar', 'doughnut', 'polarArea', 'line'];
+
 create_chart("myChart1", "polarArea", ["Total PRs", "Open PRs", "Closed PRs"], "PRs stats", prs_array);
 // create_chart("myChart2", "bar", ["a"], "a", 1);
 // create_chart("myChart3", "polarArea", ["b"], "b", 2);
