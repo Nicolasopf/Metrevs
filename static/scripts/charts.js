@@ -42,12 +42,66 @@ for (cookie of cookies) {
 	if (cookie.indexOf("chartsData") != -1) {
 		var arrays = cookie.split("chartsData=")[1].slice(1, -1).replace(/\\054/g, ",").split("-");
 		var prs_array = arrays[0].split(",");
-		var time_merge = arrays[1];
+		var time_merge_list = arrays[1].split(", ");
+		var time_merge_obj = {}
+
+		for (var data of time_merge_list) {
+			try {
+				var tmp = data.split(":")
+				if (tmp[1] === undefined) {
+					break
+				}
+				time_merge_obj[tmp[0]] = tmp[1]
+			}
+			catch {
+				break
+			}
+		}
+
+		var comments = arrays[2].split(", ")
+		var comments_obj = {}
+
+		for (data of comments) {
+			try {
+				var tmp = data.split(":")
+				if (tmp[1] === undefined) {
+					break
+				}
+				comments_obj[tmp[0]] = tmp[1]
+			}
+			catch {
+				break
+			}
+		}
+
+		var merged = arrays[3].split(", ")
+		var merged_obj = {}
+
+		for (data of merged) {
+			try {
+				var tmp = data.split(":")
+				if (tmp[1] === undefined) {
+					break
+				}
+				merged_obj[tmp[0]] = tmp[1]
+			}
+			catch {
+				break
+			}
+		}
 		break;
 	}
 }
 
-create_chart("myChart1", "polarArea", ["Total PRs", "Open PRs", "Closed PRs"], "PRs stats", prs_array);
-// create_chart("myChart2", "bar", ["a"], "a", 1);
-// create_chart("myChart3", "polarArea", ["b"], "b", 2);
-// create_chart("myChart4", "line", ["c"], "c", 3);
+if (prs_array[0] != "0") {
+	create_chart("myChart1", "polarArea", ["Total PRs", "Open PRs", "Closed PRs"], "PRs stats", prs_array);
+}
+if (time_merge_obj[0]) {
+	create_chart("myChart2", "doughnut", Object.keys(time_merge_obj), "Time merge from create", Object.values(time_merge_obj));
+}
+if (comments_obj[0]) {
+	create_chart("myChart3", "bar", Object.keys(comments_obj), "Comments in PRs", Object.values(comments_obj));
+}
+if (merged_obj[0]) {
+	create_chart("myChart4", "pie", Object.keys(merged_obj), "Merged PRs", Object.values(merged_obj));
+}
