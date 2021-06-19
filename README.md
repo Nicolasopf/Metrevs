@@ -16,10 +16,10 @@ sudo pip3 install PyGithub
 
 ### Start application
 If you want to test or use in your localhost, don't forget to create an OAuth app in https://github.com/settings/developers
-Also, use the clien_id and client_secret as environment variables when executing main.py.
+Also, use the client_id and client_secret as environment variables when executing main.py.
 
 ```
-GITHUB_CLIENT_ID=id GITHUB_CLIENT_SECRET=secret main.py.py
+GITHUB_CLIENT_ID=id GITHUB_CLIENT_SECRET=secret main.py
 ```
 
 You can go to the website at port http://127.0.0.1:5000.
