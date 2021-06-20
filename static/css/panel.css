@@ -1,19 +1,24 @@
-#summary h1{
+#summary h1 {
     text-align: left;
     color: #23A18A;
 }
 
-#summary h2{
-    color: #23A18A;
+#summary h2 {
+	color: #23A18A;
 }
 
-#summary .container{
+#summary #repo_name {
+	margin-left: 10px;
+    color: #FFFFFF;
+}
+
+#summary .container {
 	margin-top: 60px;
     display: flex;
     flex-wrap: wrap;
 }
 
-.sub-menu{
+.sub-menu {
 	margin-bottom: 40px;
     width: 100%;
     display: flex;
@@ -24,17 +29,17 @@
 	border-radius: 10px;
 }
 
-.title{
+.title {
     display: flex;
     flex-wrap: wrap;
 }
 
-.select-items{
+.select-items {
 	display: flex;
 	flex-wrap: wrap;
 }
 
-.sub-select{
+.sub-select {
 	padding: 0 10px;
 	display: flex;
     flex-wrap: wrap;
