@@ -13,24 +13,28 @@
 				<div class="title">
 					<h1>Repository stats</h1>
 				</div>
-				<!-- <div class="select-items"> -->
-				<!-- 	<div class="sub-select"> -->
-				<!-- 		<h2>Users:</h2> -->
-				<!-- 		<input type="checkbox" id="arrow" class="toggle"> -->
-				<!-- 		<label for="arrow" class="arrow-icon">&#9776;</label> -->
-				<!-- 		<div class="slide_menu"> -->
-				<!-- 			{% for name in users %} -->
-				<!-- 			<p class="items"><input type="checkbox" name="username">{{ name.login }}</p> -->
-				<!-- 			{% endfor %} -->
-				<!-- 		</div> -->
-				<!-- 	</div> -->
-				<!-- 	<div class="calendar"> -->
-				<!-- 		<h2>From:</h2> -->
-				<!-- 		<input type="date" id="start" name="trip-start" value="" min="2010-01-01" max="2021-06-17"> -->
-				<!-- 		<h2>To:</h2> -->
-				<!-- 		<input type="date" id="end" name="trip-end" value="" min="2010-01-01" max="2021-06-17"> -->
-				<!-- 	</div> -->
-				<!-- </div> -->
+				<div class="select-items">
+				  <div class="sub-select">
+					<h2>Users:</h2>
+                    <input type="checkbox" id="arrow" class="toggle">
+                    <label for="arrow" class="arrow-icon">&#9776;</label>
+                    <div class="slide_menu">
+                      <form method="post" action="{{ url_for('app_views.show_repo_info') }}">
+                        {% for k, v in repos_data.items() %}
+						{% for user in v %}
+                        <p class="items"><input type="checkbox" name="username" value="{{ user }}">{{ user }}</p>
+						{% endfor %}
+                        {% endfor %}
+                    </div>
+                  </div>
+                  <div class="calendar">
+                    <h2>From:</h2>
+                    <input type="date" id="start" name="trip-start" value="" min="2010-01-01" max="2021-06-19">
+                    <h2>To:</h2>
+                    <input type="date" id="end" name="trip-end" value="" min="2010-01-01" max="2021-06-19">
+                  </div>
+				  <p><button type="submit" id="send">New report</button></p>
+                </div>
 			</div>
 			{% for key, value in repos_data.items() %}
 			<h2 class="tablename">Repo: {{ key }}</h2>
