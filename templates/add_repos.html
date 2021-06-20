@@ -16,7 +16,7 @@
 		<label for="arrow" class="arrow-icon">&#9776;</label>
 		<h3>Added repositories</h3>
 		<div class="slide_menu">
-		  <form method="post" action="{{ url_for('panel') }}">
+		  <form method="post" action="{{ url_for('panel_post') }}">
 			{% for name in repos %}
 			<p class="items"><input type="checkbox" name="repos_list" value="{{ name.full_name }}">{{ name.name }}</p>
 			{% endfor %}
