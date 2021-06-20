@@ -70,18 +70,45 @@ def add_repos():
     return render_template('add_repos.html', repos=repos)
 
 
+@app.route('/panel', methods=['GET'])
+def panel_get():
+    ''' Get method for the panel'''
+    if not request.cookies.get("userToken"):  # If the cookie doesn't exist
+        return github_app.authorize(scope="user, repo")
+
+    repos = request.cookies.get("repos").split(", ")
+    repo_name = repos[len(repos) - 1]
+
+    userToken = request.cookies.get("userToken")
+    user_session = Github(userToken)
+    users = []
+
+    for repo in repos:
+        repository = user_session.get_repo(repo)
+        collaborators = repository.get_collaborators()
+        for collaborator in collaborators:
+            if collaborator not in users:
+                users.append(collaborator)
+
+    response = make_response(render_template(
+        'panel.html', repo_name=repo_name, users=users))
+
+    return response
+
+
 @app.route('/panel', methods=['GET', 'POST'])
-def panel():
+def panel_post():
     ''' Show repo selected, set a cookie for the repo, and show users. '''
     if not request.cookies.get("userToken"):  # If the cookie doesn't exist
         return github_app.authorize(scope="user, repo")
 
+    select = request.form.getlist('repos_list')  # Get the repo name selected.
+    if not select:
+        return redirect(url_for("add_repos"))
+
     userToken = request.cookies.get("userToken")
     user_session = Github(userToken)
 
-    select = request.form.getlist('repos_list')  # Get the repo name selected.
-    if not select and request.cookies.get("repos") == "":
-        return redirect(url_for("add_repos"))
     users = []
 
     for repo in select:
@@ -92,11 +119,7 @@ def panel():
                 users.append(collaborator)
         # Pretty print, without the author of repo
 
-    try:
-        repo_name = select[len(select) - 1]
-    except:
-        repo_name = request.cookies.get("repos").split(", ")
-        repo_name = repo_name[len(repo_name) - 1]
+    repo_name = select[len(select) - 1]
 
     response = make_response(render_template(
         'panel.html', repo_name=repo_name, users=users))
