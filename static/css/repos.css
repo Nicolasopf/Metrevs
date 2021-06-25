@@ -97,6 +97,7 @@
     z-index: 50;
     overflow: auto;
 }
+
 .calendar{
 	padding: 0 10px;
 	display: flex;
@@ -104,10 +105,17 @@
 	justify-content: space-between;
 	width: 220px;
 }
+
 .calendar input {
 	margin: 0 5px;
 	max-height: 30px;
 	border: none;
 	background-color: transparent;
 	color: #fff;
+}
+
+.select-items button {
+	width: 30px;
+	height: 90%;
+	margin: 5% 2%;
 }
