@@ -6,7 +6,7 @@ from github import Github
 from datetime import datetime
 
 
-def review_data(token, repo, users, start_date, end_date):
+def show_review_data(token, repo, users, start_date, end_date):
     """ Return the reviews data for each user in dictionary.
     Developer
     Reviews requests
