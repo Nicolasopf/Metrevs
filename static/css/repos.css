@@ -115,7 +115,10 @@
 }
 
 .select-items button {
-	width: 30px;
+	width: 50px;
 	height: 90%;
 	margin: 5% 2%;
+	text-align: center;
+	border: none;
+	background-color: #23A18A;
 }
