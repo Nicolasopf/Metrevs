@@ -20,10 +20,8 @@
                     <label for="arrow" class="arrow-icon">&#9776;</label>
                     <div class="slide_menu">
                       <form method="post" action="{{ url_for('app_views.show_repo_info') }}">
-                        {% for k, v in repos_data.items() %}
-						{% for user in v %}
+						{% for user in final_user_list %}
                         <p class="items"><input type="checkbox" name="username" value="{{ user }}">{{ user }}</p>
-						{% endfor %}
                         {% endfor %}
                     </div>
                   </div>
