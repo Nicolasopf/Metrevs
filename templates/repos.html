@@ -13,15 +13,15 @@
 				<div class="title">
 					<h1>Repository stats</h1>
 				</div>
+				<form method="post" action="{{ url_for('app_views.show_repo_info') }}">
 				<div class="select-items">
-				  <form method="post" action="{{ url_for('app_views.show_repo_info') }}">
 				  <div class="sub-select">
 					<h2>Repos:</h2>
                     <input type="checkbox" id="arrow" class="toggle">
                     <label for="arrow" class="arrow-icon">&#9776;</label>
                     <div class="slide_menu">
 						{% for repo in repos_data.keys() %}
-                        <p class="items"><input type="checkbox" name="reponame" value="{{ repo }}">{{ repo }}</p>
+                        <p class="items"><input type="checkbox" name="reponame" value="{{ repo }}">{{ repo.name }}</p>
                         {% endfor %}
                     </div>
                   </div>
