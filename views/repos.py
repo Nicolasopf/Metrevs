@@ -157,7 +157,7 @@ def prs_requests(token, repo, users, start_date, end_date):
         tmp['avg_time_merge_review'] = average_float(
             tmp['merged_review_hours'], tmp['merged'])
 
-    return dict_users
+    return dict_users, users_in_repo
 
 
 @app_views.route('/repos', methods=["GET", "POST"])
@@ -189,16 +189,29 @@ def show_repo_info():
     token = request.cookies.get("userToken")
     repos = request.cookies.get("repos").split(", ")
 
+    user_list = []
     repos_data = {}
     for repo in repos:
-        repos_data[repo] = prs_requests(
-            token, repo, users, start_date, end_date)
+        tmp_users = []
+        repos_data[repo], tmp_users = prs_requests(token, repo, users, start_date, end_date)
+        user_list.append(tmp_users)
+
+    final_user_list = []
+    for users in user_list:
+        if (isinstance(users, list)):
+            for user in users:
+                if user not in final_user_list:
+                    final_user_list.append(user)
+        else:
+            if users not in final_user_list:
+                final_user_list.append(group)
 
     '''
     Set cookie for charts:
     Format: "," for each item, "-" for each chart.
     '''
-    resp = make_response(render_template('repos.html', repos_data=repos_data))
+    resp = make_response(render_template('repos.html', repos_data=repos_data,
+    final_user_list=final_user_list))
     prs = 0
     open_prs = 0
     closed = 0
