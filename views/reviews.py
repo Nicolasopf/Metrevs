@@ -91,7 +91,7 @@ def show_review_info():
     repos_data = {}
     for repo in repos:
         tmp_users = []
-        repos_data[repo], tmp_users = review_data(
+        repos_data[repo], tmp_users = show_review_data(
             token, repo, users, start_date, end_date)
         user_list.append(tmp_users)
 
