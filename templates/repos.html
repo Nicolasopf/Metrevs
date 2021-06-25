@@ -21,7 +21,7 @@
                     <label for="arrow" class="arrow-icon">&#9776;</label>
                     <div class="slide_menu">
 						{% for repo in repos_data.keys() %}
-                        <p class="items"><input type="checkbox" name="reponame" value="{{ repo }}">{{ repo.name }}</p>
+                        <p class="items"><input type="checkbox" name="reponame" value="{{ repo }}">{{ repo.split('/')[1] }}</p>
                         {% endfor %}
                     </div>
                   </div>
