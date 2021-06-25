@@ -34,76 +34,9 @@
     flex-wrap: wrap;
 }
 
-.select-items {
-	display: flex;
-	flex-wrap: wrap;
-}
-
-.sub-select {
-	padding: 0 10px;
-	display: flex;
-    flex-wrap: wrap;
-	justify-content: space-between;
-	width:170px;
-}
-
-.toggle {
-    display: none;
-}
-
-.arrow-icon {
-    cursor: pointer;
-}
-
-.toggle:checked ~ .slide_menu {
-    display: block;
-}
-
-.slide_menu {
-	position: absolute;
-    display: none;
-    background: #333;
-    width: 150px;
-    margin: auto;
-	margin-top: 34px;
-    height: 300px;
-    border: solid 1px;
-    z-index: 50;
-    overflow: auto;
-}
-.calendar{
-	padding: 0 10px;
-	display: flex;
-    flex-wrap: wrap;
-	justify-content: space-around;
-	width: 220px;
-}
-.calendar input {
-	margin: 0 5px;
-	max-height: 30px;
-	border: none;
-	background-color: transparent;
-	color: #fff;
-}
-
 .chart-container{
     width: 90%;
     margin: 2% 5%;
-}
-
-#summary button {
-	position: fixed;
-	margin: -50px 0 0 136px;
-	z-index: 100;
-	background: transparent;
-	width: 60px;
-	height: 30px;
-	border-style: none;
-}
-
-#summary button:hover {
-	background-color: rgba(255,255,255,0.3);
-	cursor: pointer;
 }
 
 @media (min-width:1024px) {
