@@ -15,26 +15,6 @@
 		  <h1>Summary:</h1>
 		  <h2 id="repo_name">{{ repo_name }}</h2>
 		</div>
-		<div class="select-items">
-		  <div class="sub-select">
-			<h2>Users:</h2>
-			<input type="checkbox" id="arrow" class="toggle">
-			<label for="arrow" class="arrow-icon">&#9776;</label>
-			<div class="slide_menu">
-			  <form method="post" action="{{ url_for('app_views.show_repo_info') }}">
-				{% for name in users %}
-				<p class="items"><input type="checkbox" name="username" value="{{ name.login }}">{{ name.login }}</p>
-				{% endfor %}
-			</div>
-		  </div>
-		  <p><button type="submit" id="send"></button></p>
-		  <div class="calendar">
-			<h2>From:</h2>
-			<input type="date" id="start" name="trip-start" value="" min="2010-01-01" max="2021-06-19">
-			<h2>To:</h2>
-			<input type="date" id="end" name="trip-end" value="" min="2010-01-01" max="2021-06-19">
-		  </div>
-		</div>
 	  </div>
 	  <div class="chart-container">
 		<h1>PR's Stats</h1>
