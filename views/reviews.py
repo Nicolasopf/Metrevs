@@ -3,22 +3,24 @@
 from views import app_views
 from flask import render_template, request, make_response, redirect, url_for
 from github import Github
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
-def show_review_data(token, repo, users, start_date, end_date):
+def review_requests(token, repo, users, start_date, end_date):
     """ Return the reviews data for each user in dictionary.
-    Developer
-    Reviews requests
-    Reviews count
-    Reviews done
-    Average review in PR
+    Developer = dict_user[user]
+    Reviews requests = dict_user['requests']
+    Reviews received = dict_user['received']
+    Reviews done = dict_user['done']
+    Average review in PR = dict_user['avg_received_prs']
+    Average time per review = dict_user['avg_time_review']
     PR/s = Pull Request/s
     """
     user_session = Github(token)  # Start connection using the auth_token
     repo = user_session.get_repo(repo)  # Select the repo from cookie.
 
     pulls = repo.get_pulls(state='all')
+    total_prs = 0
 
     collaborators = repo.get_collaborators()
     users_in_repo = []
@@ -28,10 +30,9 @@ def show_review_data(token, repo, users, start_date, end_date):
     dict_users = {}
     for user in users:
         if user in users_in_repo:
-            dict_users[user] = {'requests': 0, 'open_prs': 0, 'closed': 0, 'merged': 0, 'comments': 0, 'merged_no_review': 0, 'reviews': 0,
-                                'comment_hours': 0, 'review_hours': 0, 'merged_hours': 0, 'merged_commit_hours': 0, 'merged_comments_hours': 0, 'merged_review_hours': 0}
+            dict_users[user] = {'total_prs': 0, 'requests': 0, 'received': 0,
+                                'done': 0, 'avg_received_pr': 0, 'time_review': [], 'avg_time_reviews': 0}
 
-    print('a')
     for pr in pulls:
         pull_date = pr.created_at
         try:
@@ -48,12 +49,47 @@ def show_review_data(token, repo, users, start_date, end_date):
         if user not in dict_users.keys():
             continue
 
+        dict_users[user]['total_prs'] += 1
         for page in pr.get_review_requests():
-            print(page)
             for request in page:
                 dict_users[user]['requests'] += 1
 
-    print(dict_users)
+        time_reviews = []
+        for review in pr.get_reviews():
+            time_reviews.append(review.submitted_at)
+            dict_users[user]['received'] += 1
+            reviewer = review.user.login
+            if reviewer in dict_users.keys():
+                dict_users[reviewer]['done'] += 1
+
+        if len(time_reviews) > 1:
+            timedeltas = []
+            for i in range(len(time_reviews) - 1):
+                timedeltas.append(time_reviews[i + 1] - time_reviews[i])
+            avg_time = sum(timedeltas, timedelta()) / len(timedeltas)
+            dict_users[user]['time_review'].append(avg_time)
+        else:
+            ''' Nothing or get the avg the pr open and review? '''
+            pass
+
+    """ Set the avg for review in prs """
+    for user in dict_users.keys():
+        # Get the average reviews received from here:
+        if dict_users[user]['total_prs'] > 0 and dict_users[user]['received'] > 0:
+            if dict_users[user]['total_prs'] < dict_users[user]['received']:
+                dict_users[user]['avg_received_pr'] = "{:.2f}".format(
+                    dict_users[user]['total_prs'] / dict_users[user]['received'])
+            else:
+                dict_users[user]['avg_received_pr'] = "{:.2f}".format(
+                    dict_users[user]['received'] / dict_users[user]['total_prs'])
+        # Until here.
+        # Get the avg time per review:
+        try:
+            avg_time = sum(dict_users[user]['time_review'], timedelta(
+            )) / len(dict_users[user]['time_review'])
+            dict_users[user]['avg_time_reviews'] = avg_time
+        except:
+            pass
 
     return dict_users, users_in_repo
 
@@ -91,10 +127,20 @@ def show_review_info():
     repos_data = {}
     for repo in repos:
         tmp_users = []
-        repos_data[repo], tmp_users = show_review_data(
+        repos_data[repo], tmp_users = review_requests(
             token, repo, users, start_date, end_date)
         user_list.append(tmp_users)
 
+    final_user_list = []
+    for users in user_list:
+        if (isinstance(users, list)):
+            for user in users:
+                if user not in final_user_list:
+                    final_user_list.append(user)
+        else:
+            if users not in final_user_list:
+                final_user_list.append(group)
+
     resp = make_response(render_template(
-        'reviews.html', repos_data=repos_data))
+        'reviews.html', repos_data=repos_data, final_user_list=final_user_list))
     return resp
