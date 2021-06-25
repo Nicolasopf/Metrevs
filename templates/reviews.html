@@ -19,12 +19,10 @@
                     <input type="checkbox" id="arrow" class="toggle">
                     <label for="arrow" class="arrow-icon">&#9776;</label>
                     <div class="slide_menu">
-                      <form method="post" action="{{ url_for('app_views.show_review_data') }}">
-                        {% for k, v in repos_data.items() %}
-						{% for user in v %}
+                      <form method="post" action="{{ url_for('app_views.show_review_info') }}">
+						{% for user in final_user_list %}
                         <p class="items"><input type="checkbox" name="username" value="{{ user }}">{{ user }}</p>
 						{% endfor %}
-                        {% endfor %}
                     </div>
                   </div>
                   <div class="calendar">
@@ -42,7 +40,7 @@
 				<table>
 					<tr>
 						<th>Developer</th>
-						<th>Reviews Requests</th>
+						<th>Pending Reviews Requested</th>
 						<th>Reviews Received</th>
 						<th>Reviews Done</th>
 						<th>Avg. Received per PR</th>
