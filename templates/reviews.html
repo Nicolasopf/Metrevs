@@ -11,7 +11,7 @@
 		<div class="container">
 			<div class="sub-menu">
 				<div class="title">
-					<h1>Repository stats</h1>
+					<h1>Review Reports</h1>
 				</div>
 				<div class="select-items">
 				  <div class="sub-select">
@@ -19,7 +19,7 @@
                     <input type="checkbox" id="arrow" class="toggle">
                     <label for="arrow" class="arrow-icon">&#9776;</label>
                     <div class="slide_menu">
-                      <form method="post" action="{{ url_for('app_views.show_repo_info') }}">
+                      <form method="post" action="{{ url_for('app_views.show_review_data') }}">
                         {% for k, v in repos_data.items() %}
 						{% for user in v %}
                         <p class="items"><input type="checkbox" name="username" value="{{ user }}">{{ user }}</p>
@@ -41,39 +41,21 @@
 			<div class="tables">
 				<table>
 					<tr>
-						<th></th>
-						<th>Total PRs</th>
-						<th>Open PRs</th>
-						<th>Closed PRs</th>
-						<th>Merged PRs</th>
-						<th>Merged without review</th>
-						<th>No of comments in PRs</th>
-						<th>No of reviews in PRs</th>
-						<th>AVG comments PRs</th>
-						<th>AVG time to first comment in PRs</th>
-						<th>AVG time to first review</th>
-						<th>AVG time merge from create</th>
-						<th>AVG time merge from first commit</th>
-						<th>AVG time merge from first comment</th>
-						<th>AVG time merge from first review</th>
+						<th>Developer</th>
+						<th>Reviews Requests</th>
+						<th>Reviews Received</th>
+						<th>Reviews Done</th>
+						<th>Avg. Received per PR</th>
+						<th>Avg. Time Between Reviews</th>
 					</tr>
 					{% for user, dics in value.items() %}
 					<tr>
 						<td class="celluser">{{ user }}</td>
 						<td>{{ dics["requests"] }}</td>
-						<td>{{ dics["open_prs"] }}</td>
-						<td>{{ dics["closed"] }}</td>
-						<td>{{ dics["merged"] }}</td>
-						<td>{{ dics["merged_no_review"] }}</td>
-						<td>{{ dics["comments"] }}</td>
-						<td>{{ dics["reviews"] }}</td>
-						<td>{{ dics["comment_avg"] }}</td>
-						<td>{{ dics["avg_time_first_comment"] }}</td>
-						<td>{{ dics["avg_time_first_review"] }}</td>
-						<td>{{ dics["avg_time_merge_create"] }}</td>
-						<td>{{ dics["avg_time_first_commit"] }}</td>
-						<td>{{ dics["avg_time_merge_comment"] }}</td>
-						<td>{{ dics["avg_time_merge_review"] }}</td>
+						<td>{{ dics["received"] }}</td>
+						<td>{{ dics["done"] }}</td>
+						<td>{{ dics["avg_received_pr"] }}</td>
+						<td>{{ dics["avg_time_reviews"] }}</td>
 					</tr>
 					{% endfor %}
 				</table>
