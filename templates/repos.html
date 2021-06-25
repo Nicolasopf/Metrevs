@@ -45,6 +45,7 @@
                 </div>
 			</div>
 			{% for key, value in repos_data.items() %}
+			{% if repos_data[key] %}
 			<h2 class="tablename">Repo: {{ key }}</h2>
 			<div class="tables">
 				<table>
@@ -87,6 +88,7 @@
 				</table>
 			</div>
 			<br><br>
+			{% endif %}
 			{% endfor %}
 		</div>
 	</section>
