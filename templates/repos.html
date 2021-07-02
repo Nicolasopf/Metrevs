@@ -13,22 +13,22 @@
 				<div class="title">
 					<h1>Repository stats</h1>
 				</div>
+				<form method="post" action="{{ url_for('app_views.show_repo_info') }}">
 				<div class="select-items">
-				  <form method="post" action="{{ url_for('app_views.show_repo_info') }}">
 				  <div class="sub-select">
 					<h2>Repos:</h2>
                     <input type="checkbox" id="arrow" class="toggle">
                     <label for="arrow" class="arrow-icon">&#9776;</label>
                     <div class="slide_menu">
 						{% for repo in repos_data.keys() %}
-                        <p class="items"><input type="checkbox" name="reponame" value="{{ repo }}">{{ repo }}</p>
+                        <p class="items"><input type="checkbox" name="reponame" value="{{ repo }}">{{ repo.split('/')[1] }}</p>
                         {% endfor %}
                     </div>
                   </div>
 				  <div class="sub-select">
 					<h2>Users:</h2>
-                    <input type="checkbox" id="arrow" class="toggle">
-                    <label for="arrow" class="arrow-icon">&#9776;</label>
+                    <input type="checkbox" id="arrow1" class="toggle">
+                    <label for="arrow1" class="arrow-icon">&#9776;</label>
                     <div class="slide_menu">
 						{% for user in final_user_list %}
                         <p class="items"><input type="checkbox" name="username" value="{{ user }}">{{ user }}</p>
@@ -37,9 +37,9 @@
                   </div>
                   <div class="calendar">
                     <h2>From:</h2>
-                    <input type="date" id="start" name="trip-start" value="" min="2010-01-01" max="2021-06-19">
+                    <input type="date" id="start" name="trip-start" value="" min="2010-01-01" max="2021-06-25">
                     <h2>To:</h2>
-                    <input type="date" id="end" name="trip-end" value="" min="2010-01-01" max="2021-06-19">
+                    <input type="date" id="end" name="trip-end" value="" min="2010-01-01" max="2021-06-25">
                   </div>
 				  <p><button type="submit" id="send">New report</button></p>
                 </div>
