@@ -41,20 +41,22 @@
 				<table>
 					<tr>
 						<th>Developer</th>
-						<th>Pending Reviews Requested</th>
-						<th>Reviews Received</th>
-						<th>Reviews Done</th>
-						<th>Avg. Received per PR</th>
-						<th>Avg. Time Between Reviews</th>
+						<th>Reviews done</th>
+						<th>Reviews pending</th>
+						<th>Reviews requested changes</th>
+						<th>Reviews commented</th>
+						<th>Reviews approved</th>
+						<th>Avg. Review done</th>
 					</tr>
 					{% for user, dics in value.items() %}
 					<tr>
 						<td class="celluser">{{ user }}</td>
-						<td>{{ dics["requests"] }}</td>
-						<td>{{ dics["received"] }}</td>
 						<td>{{ dics["done"] }}</td>
-						<td>{{ dics["avg_received_pr"] }}</td>
-						<td>{{ dics["avg_time_reviews"] }}</td>
+						<td>{{ dics["pending"] }}</td>
+						<td>{{ dics["request_changes"] }}</td>
+						<td>{{ dics["commented"] }}</td>
+						<td>{{ dics["approved"] }}</td>
+						<td>{{ dics["avg_review_pr"] }}</td>
 					</tr>
 					{% endfor %}
 				</table>
