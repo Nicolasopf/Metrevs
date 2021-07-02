@@ -30,10 +30,16 @@ def review_requests(token, repo, users, start_date, end_date):
     dict_users = {}
     for user in users:
         if user in users_in_repo:
-            dict_users[user] = {'total_prs': 0, 'requests': 0, 'received': 0,
-                                'done': 0, 'avg_received_pr': 0, 'time_review': [], 'avg_time_reviews': 0}
+            dict_users[user] = {'counted_pr': False, 'pending': 0, 'done': 0,
+                                'commented': 0, 'request_changes': 0,
+                                'approved': 0, 'avg_review_pr': 0,
+                                'time_review': [], 'avg_time_reviews': 0}
+
+    review_states = {'CHANGES_REQUESTED': 'request_changes',
+                     'COMMENTED': 'commented', 'APPROVED': 'approved'}
 
     for pr in pulls:
+        total_prs += 1
         pull_date = pr.created_at
         try:
             if start_date == 0:
@@ -45,48 +51,49 @@ def review_requests(token, repo, users, start_date, end_date):
         except:
             pass
 
-        user = pr.user.login
-        if user not in dict_users.keys():
-            continue
-
-        dict_users[user]['total_prs'] += 1
         for page in pr.get_review_requests():
             for request in page:
-                dict_users[user]['requests'] += 1
+                if dict_users.get(request.login):
+                    dict_users[request.login]['pending'] += 1
 
         time_reviews = []
         for review in pr.get_reviews():
-            time_reviews.append(review.submitted_at)
-            dict_users[user]['received'] += 1
             reviewer = review.user.login
             if reviewer in dict_users.keys():
+                dict_users[reviewer]['counted_pr'] = True
                 dict_users[reviewer]['done'] += 1
+                dict_users[reviewer]['time_reviews'].append(
+                    review.submitted_at)
+                for key, value in review_states.items():
+                    if review.state == key:
+                        dict_users[reviewer][value] += 1
 
-        if len(time_reviews) > 1:
-            timedeltas = []
-            for i in range(len(time_reviews) - 1):
-                timedeltas.append(time_reviews[i + 1] - time_reviews[i])
-            avg_time = sum(timedeltas, timedelta()) / len(timedeltas)
-            dict_users[user]['time_review'].append(avg_time)
-        else:
-            ''' Nothing or get the avg the pr open and review? '''
-            pass
+        # Check if user requested in this pr:
+        for user, dic in dict_users.items():
+            if len(time_reviews) > 1:
+                timedeltas = []
+                for i in range(len(time_reviews) - 1):
+                    timedeltas.append(time_reviews[i + 1] - time_reviews[i])
+                    avg_time = sum(timedeltas, timedelta()) / len(timedeltas)
+                    dict_users[user]['time_reviews'].append(avg_time)
+            else:
+                ''' Nothing or get the avg the pr open and review? '''
+                pass
 
     """ Set the avg for review in prs """
     for user in dict_users.keys():
         # Get the average reviews received from here:
-        if dict_users[user]['total_prs'] > 0 and dict_users[user]['received'] > 0:
-            if dict_users[user]['total_prs'] < dict_users[user]['received']:
-                dict_users[user]['avg_received_pr'] = "{:.2f}".format(
-                    dict_users[user]['total_prs'] / dict_users[user]['received'])
-            else:
-                dict_users[user]['avg_received_pr'] = "{:.2f}".format(
-                    dict_users[user]['received'] / dict_users[user]['total_prs'])
+        if total_prs < dict_users[user]['done']:
+            dict_users[user]['avg_review_pr'] = "{:.2f}".format(
+                total_prs / dict_users[user]['done'])
+        else:
+            dict_users[user]['avg_review_pr'] = "{:.2f}".format(
+                dict_users[user]['done'] / total_prs)
         # Until here.
         # Get the avg time per review:
         try:
-            avg_time = sum(dict_users[user]['time_review'], timedelta(
-            )) / len(dict_users[user]['time_review'])
+            avg_time = sum(dict_users[user]['time_reviews'], timedelta(
+            )) / len(dict_users[user]['time_reviews'])
             dict_users[user]['avg_time_reviews'] = avg_time
         except:
             pass
