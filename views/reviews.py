@@ -33,7 +33,7 @@ def review_requests(token, repo, users, start_date, end_date):
             dict_users[user] = {'counted_pr': False, 'pending': 0, 'done': 0,
                                 'commented': 0, 'request_changes': 0,
                                 'approved': 0, 'avg_review_pr': 0,
-                                'time_review': [], 'avg_time_reviews': 0}
+                                'time_reviews': [], 'avg_time_reviews': 0}
 
     review_states = {'CHANGES_REQUESTED': 'request_changes',
                      'COMMENTED': 'commented', 'APPROVED': 'approved'}
