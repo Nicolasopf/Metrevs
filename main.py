@@ -76,7 +76,10 @@ def panel_get():
     if not request.cookies.get("userToken"):  # If the cookie doesn't exist
         return github_app.authorize(scope="user, repo")
 
-    repos = request.cookies.get("repos").split(", ")
+    repos = request.cookies.get("repos")
+    if not repos:
+        return render_template('add_repos.html')
+    repos = repos.split(", ")
     repo_name = repos[len(repos) - 1]
 
     userToken = request.cookies.get("userToken")
