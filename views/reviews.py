@@ -30,15 +30,22 @@ def review_requests(token, repo, users, start_date, end_date):
     dict_users = {}
     for user in users:
         if user in users_in_repo:
-            dict_users[user] = {'counted_pr': False, 'pending': 0, 'done': 0,
-                                'commented': 0, 'request_changes': 0,
-                                'approved': 0, 'avg_review_pr': 0,
-                                'time_reviews': [], 'avg_time_reviews': 0}
+            dict_users[user] = {'total_prs': 0, 'counted_pr': False,
+                                'pending_reviewer': 0, 'pending_dev': 0,
+                                'done': 0, 'received': 0, 'commented': 0,
+                                'request_changes': 0, 'approved': 0,
+                                'avg_review_pr': 0, 'time_reviews': [],
+                                'avg_time_reviews': 0}
 
     review_states = {'CHANGES_REQUESTED': 'request_changes',
                      'COMMENTED': 'commented', 'APPROVED': 'approved'}
 
     for pr in pulls:
+        user = pr.user.login
+        if user not in users_in_repo:
+            continue
+        dict_users[user]['total_prs'] += 1
+
         total_prs += 1
         pull_date = pr.created_at
         try:
@@ -53,12 +60,15 @@ def review_requests(token, repo, users, start_date, end_date):
 
         for page in pr.get_review_requests():
             for request in page:
+                if dict_users.get(user):
+                    dict_users[user]['pending_dev'] += 1
                 if dict_users.get(request.login):
-                    dict_users[request.login]['pending'] += 1
+                    dict_users[request.login]['pending_reviewer'] += 1
 
         time_reviews = []
         for review in pr.get_reviews():
             reviewer = review.user.login
+            dict_users[user]['received'] += 1
             if reviewer in dict_users.keys():
                 dict_users[reviewer]['counted_pr'] = True
                 dict_users[reviewer]['done'] += 1
@@ -101,11 +111,36 @@ def review_requests(token, repo, users, start_date, end_date):
     return dict_users, users_in_repo
 
 
+def get_data(token, repos):
+    """ Get the repos users when the method is GET """
+    repos_dict = {}
+    users_in_repos = []
+    user_session = Github(token)  # Start connection using the auth_token
+
+    for repo_name in repos:
+        repos_dict[repo_name] = {}
+        repo = user_session.get_repo(repo_name)  # Select the repo from cookie.
+        collaborators = repo.get_collaborators()
+        for collaborator in collaborators:
+            if collaborator.login not in users_in_repos:
+                users_in_repos.append(collaborator.login)
+
+    return repos_dict, users_in_repos
+
+
 @app_views.route('/reviews', methods=["GET", "POST"])
 def show_review_info():
     ''' Show the info for the repo selected. This repo is located at cookie. '''
     if not request.cookies.get("repos") or not request.cookies.get("userToken"):
         return redirect(url_for('add_repos'))
+
+    token = request.cookies.get("userToken")
+
+    if request.method == "GET":
+        repos = request.cookies.get("repos").split(", ")
+        repos_dict, users = get_data(token, repos)
+        return render_template('reviews.html', repos_data=repos_dict,
+                               final_user_list=users)
 
     users = request.form.getlist("username")
 
