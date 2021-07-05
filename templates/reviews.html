@@ -47,6 +47,7 @@
 			{% for key, value in repos_data.items() %}
 			{% if repos_data[key] %}
 			<h2 class="tablename">Repo: {{ key }}</h2>
+			<h3 class="pov">POV of reviewer</h3>
 			<div class="tables">
 				<table>
 					<tr>
@@ -62,7 +63,7 @@
 					<tr>
 						<td class="celluser">{{ user }}</td>
 						<td>{{ dics["done"] }}</td>
-						<td>{{ dics["pending"] }}</td>
+						<td>{{ dics["pending_reviewer"] }}</td>
 						<td>{{ dics["request_changes"] }}</td>
 						<td>{{ dics["commented"] }}</td>
 						<td>{{ dics["approved"] }}</td>
@@ -71,6 +72,25 @@
 					{% endfor %}
 				</table>
 			</div>
+			<h3 class="pov">POV of Developer</h3>
+			<div class="tables">
+				<table>
+					<tr>
+						<th>Developer</th>
+						<th>Total PRs</th>
+						<th>Reviews pending</th>
+						<th>Reviews received</th>
+						<th>Avg. Time Review receive</th>
+					</tr>
+					{% for user, dics in value.items() %}
+					<tr>
+						<td class="celluser">{{ user }}</td>
+						<td>{{ dics["total_prs"] }}</td>
+						<td>{{ dics["pending_dev"] }}</td>
+						<td>{{ dics["received"] }}</td>
+					</tr>
+					{% endfor %}
+				</table>
 			<br><br>
 			{% endif %}
 			{% endfor %}
