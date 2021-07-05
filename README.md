@@ -9,6 +9,7 @@ Installation from zero.
 sudo apt update
 sudo apt install python3
 sudo apt install python3-pip
+sudo pip3 install Flask
 sudo pip3 install GitHub-Flask
 sudo pip3 install gspread
 sudo pip3 install PyGithub
@@ -19,7 +20,7 @@ If you want to test or use in your localhost, don't forget to create an OAuth ap
 Also, use the client_id and client_secret as environment variables when executing main.py.
 
 ```
-GITHUB_CLIENT_ID=id GITHUB_CLIENT_SECRET=secret main.py
+GITHUB_CLIENT_ID=id GITHUB_CLIENT_SECRET=secret python3 main.py
 ```
 
 You can go to the website at port http://127.0.0.1:5000.
