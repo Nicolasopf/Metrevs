@@ -26,13 +26,23 @@
                     </div>
                   </div>
 				  <div class="sub-select">
-					<h2>Users:</h2>
+					<h2>Reviewers:</h2>
                     <input type="checkbox" id="arrow1" class="toggle">
                     <label for="arrow1" class="arrow-icon">&#9776;</label>
                     <div class="slide_menu">
-						{% for user in final_user_list %}
-                        <p class="items"><input type="checkbox" name="username" value="{{ user }}">{{ user }}</p>
-						{% endfor %}
+					  {% for user in final_user_list %}
+                      <p class="items"><input type="checkbox" name="username" value="{{ user }}">{{ user }}</p>
+					  {% endfor %}
+                    </div>
+                  </div>
+				  <div class="sub-select">
+					<h2>Devs:</h2>
+                    <input type="checkbox" id="arrow2" class="toggle">
+                    <label for="arrow2" class="arrow-icon">&#9776;</label>
+                    <div class="slide_menu">
+					  {% for user in final_user_list %}
+                      <p class="items"><input type="checkbox" name="username" value="{{ user }}">{{ user }}</p>
+					  {% endfor %}
                     </div>
                   </div>
                   <div class="calendar">
