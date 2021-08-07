@@ -61,11 +61,11 @@ def after_login(access_token):
 @app.route('/add_repos')
 def add_repos():
     ''' add repositories to cookies. '''
-    if not request.cookies.get("userToken"):  # If the cookie doesn't exist
+    user_token = request.cookies.get("userToken")
+    if not user_token:  # If the cookie doesn't exist
         return github_app.authorize(scope="user, repo")
 
-    userToken = request.cookies.get("userToken")
-    user_session = Github(userToken)
+    user_session = Github(user_token)
     repos = user_session.get_user().get_repos()
     return render_template('add_repos.html', repos=repos)
 
