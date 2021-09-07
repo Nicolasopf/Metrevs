@@ -6,13 +6,7 @@ Web platform to evaluate developers performance in GitHub repositories.
 ### Requirement: ubuntu 18:04
 Installation from zero.
 ```
-sudo apt update
-sudo apt install python3
-sudo apt install python3-pip
-sudo pip3 install Flask
-sudo pip3 install GitHub-Flask
-sudo pip3 install gspread
-sudo pip3 install PyGithub
+pip install -r requirements.txt
 ```
 
 ### Start application
